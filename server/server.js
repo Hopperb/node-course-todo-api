@@ -5,6 +5,7 @@ const _ = require('lodash');
 const {mongoose} = require('./db/mongoose');
 const  {Todo} = require('./models/Todo');
 const {User} = require('./models/User');
+const {authenticate} = require('./middleware/authenticate');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -103,6 +104,11 @@ app.post('/users', (req, res) => {
       res.status(400).send(e);
     })
   });
+
+
+app.get('/users/me', authenticate, (req, res) => {
+    res.send(req.user);
+});
   
 app.listen(port, () => {
     console.log(`Started on port ${port}`)
